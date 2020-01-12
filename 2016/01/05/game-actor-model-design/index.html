@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+<!-- Tencent Speed -->
+<script>var _speedMark = new Date()</script>
+<!-- End Tencent Speed -->
+<!-- Tencent Analysis -->
+<script async src="//tajs.qq.com/stats?sId=66508906"></script>
+<!-- End Tencent Analysis -->
+
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>游戏角色模型设计 | EdisonKo&#39;s Blog | Never stop.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="游戏设计">
+    <meta name="description" content="1、设计原则我们需要设计一个角色模型，独立于角色数值以及角色动画之外，能够根据不同的角色类型，表现出不同的行为。我们游戏采用cocos2d-x引擎，游戏中角色逻辑都是使用Lua来编写，而动画播放部分使用了C++来处理。Lua能够实现脚本的热更新，不仅在编写角色的脚本时很方便，同时也给后期的更新维护带来了相当大的便利。在不需要更新二进制文件时，只需要更新资源即可，省去了App Store审核的麻烦。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏角色模型设计">
+<meta property="og:url" content="https://blog.reciyun.com/2016/01/05/game-actor-model-design/index.html">
+<meta property="og:site_name" content="EdisonKo&#39;s Blog">
+<meta property="og:description" content="1、设计原则我们需要设计一个角色模型，独立于角色数值以及角色动画之外，能够根据不同的角色类型，表现出不同的行为。我们游戏采用cocos2d-x引擎，游戏中角色逻辑都是使用Lua来编写，而动画播放部分使用了C++来处理。Lua能够实现脚本的热更新，不仅在编写角色的脚本时很方便，同时也给后期的更新维护带来了相当大的便利。在不需要更新二进制文件时，只需要更新资源即可，省去了App Store审核的麻烦。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/57ba9f50gw1f7dcrha7rnj20gy0a6q3k.jpg">
+<meta property="article:published_time" content="2016-01-05T23:20:19.000Z">
+<meta property="article:modified_time" content="2020-01-12T09:39:44.447Z">
+<meta property="article:author" content="EdisonKo">
+<meta property="article:tag" content="游戏设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ww2.sinaimg.cn/large/57ba9f50gw1f7dcrha7rnj20gy0a6q3k.jpg">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">EdisonKo</h5>
+          <a href="mailto:koalli#msn.com" title="koalli#msn.com" class="mail">koalli#msn.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/koalli" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">游戏角色模型设计</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">游戏角色模型设计</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2016-01-05T23:20:19.000Z" itemprop="datePublished" class="page-time">
+  2016-01-05
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1、设计原则"><span class="post-toc-number">1.</span> <span class="post-toc-text">1、设计原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2、基本类型"><span class="post-toc-number">2.</span> <span class="post-toc-text">2、基本类型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3、几种角色行为的思考"><span class="post-toc-number">3.</span> <span class="post-toc-text">3、几种角色行为的思考</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#4、几年后的思考"><span class="post-toc-number">4.</span> <span class="post-toc-text">4、几年后的思考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-game-actor-model-design"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">游戏角色模型设计</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2016-01-05 23:20:19" datetime="2016-01-05T23:20:19.000Z"  itemprop="datePublished">2016-01-05</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="1、设计原则"><a href="#1、设计原则" class="headerlink" title="1、设计原则"></a>1、设计原则</h2><p>我们需要设计一个角色模型，独立于角色数值以及角色动画之外，能够根据不同的角色类型，表现出不同的行为。<br>我们游戏采用cocos2d-x引擎，游戏中角色逻辑都是使用Lua来编写，而动画播放部分使用了C++来处理。<br>Lua能够实现脚本的热更新，不仅在编写角色的脚本时很方便，同时也给后期的更新维护带来了相当大的便利。<br>在不需要更新二进制文件时，只需要更新资源即可，省去了App Store审核的麻烦。</p>
+<a id="more"></a>
+<h2 id="2、基本类型"><a href="#2、基本类型" class="headerlink" title="2、基本类型"></a>2、基本类型</h2><p>基于以上原则，我们需要三个不同的类型。</p>
+<p>首先是角色模型类。角色模型类主要是一些通用的属性以及行为，例如发射子弹，创建播放角色动画等。<br>然后是角色数值类则专门处理数值相关的事务，例如取得攻击力，添加增益属性等。<br>最后一个就是角色类，这个类决定了某个角色的行为，比如某个角色释放技能时应该播放什么动作。</p>
+<p>以下是一个简单的UML图。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://ww2.sinaimg.cn/large/57ba9f50gw1f7dcrha7rnj20gy0a6q3k.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h2 id="3、几种角色行为的思考"><a href="#3、几种角色行为的思考" class="headerlink" title="3、几种角色行为的思考"></a>3、几种角色行为的思考</h2><p>角色行为在我进入游戏行业的这几年里，接触过的有这么两种：</br></p>
+<p> (1)、角色由外部的控制器来控制，例如回合制游戏。回合制游戏通常由战场类来控制角色行为，而战场类一般会有一个状态机。回合制游戏在没有玩家行为参与的情况下，在回合划分清楚的情况下，往往可以在战斗前计算出每一个行为的结果，因此这类游戏常常带有跳过战斗功能，而战场类状态机主要作用就是控制整个战斗的回放。在这样的设计下，简单的修改就可以实现服务器计算战斗结果，而代价是玩家的参与感相对薄弱。</br></p>
+<p>(2)、随着游戏行业的发展，业内开始出现类似《刀塔传奇》这样玩家行为对游戏影响比较重要的游戏。由于每一个角色行为难以预期，角色之间又往往包含各种各样互相影响的技能（可能我在释放技能的时候却被别人打断了），而每一个角色受到外部影响或者自身技能影响，甚至可能会改变自己的在一段时间内的行为。因此就比较难以使用一个战场类的状态机来控制。我们最后设计完成的方案是每个角色自行维护一个状态机，为了最大限度灵活地控制角色，让角色可以做更多的事，在处理角色很多行为的地方设计了回调，例如角色被杀的时候触发什么事件，角色杀死别人的时候触发什么事件。但是这样做的结果与上面相反，虽然玩家的参与感强了，角色行为的设计也能够更加灵活，但是对服务器部分来说，就比较难以去实现完全模拟战斗这样的计算。因此如果战斗需要服务器配合验证的话，客户端部分需要在设计之初提前进行针对性的设计，提前设计可以预测的行为以及延迟补偿等机制。</p>
+<h2 id="4、几年后的思考"><a href="#4、几年后的思考" class="headerlink" title="4、几年后的思考"></a>4、几年后的思考</h2><p>整套游戏的结构、模型是在2014年下半年的时候初步完成，随着时间的推移，角色的功能不断扩展，虽然这套架构可以很方便的扩展角色行为，但是随着需求的一步步深化，也逐渐开始显得力不从心。现今大热的《王者荣耀》等对玩家实时操作要求高的游戏，不断地推动着手游行业向重度游戏的方向发展，随着流量价格下调以及网络环境不断优化，对于游戏架构的设计也在不断提高。许多以前端游网游时代的技术又重新开始被手游使用，网游的技术这几年间似乎根本没有发展，什么设计模式等等似乎全部都停留在端游页游时代。回想自己从业这几年，从一开始不断鼓吹碎片时间，到现在强调重度游戏、强调玩家的参与，仔细一看似乎手游也走上了前几年端游开始要没落的时代，而腾讯这样的大厂却又回过头在布局WeGame平台，其他的厂商似乎也只能被牵着鼻子走。而我们这些构建虚拟世界的程序员们，在学好技术完成工作之余，还能走多远？又能走到哪里去？</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <footer>
+        <a href="https://blog.reciyun.com">
+            <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" alt="EdisonKo">
+            EdisonKo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1/" rel="tag">游戏设计</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&title=《游戏角色模型设计》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&title=《游戏角色模型设计》 — EdisonKo's Blog&source=1、设计原则我们需要设计一个角色模型，独立于角色数值以及角色动画之外，能够根据不同的角色类型，表现出不同的行为。我们游戏采用cocos2d-x引擎，游戏中..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2016/01/05/game-actor-model-design/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《游戏角色模型设计》 — EdisonKo's Blog&url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2016/08/31/git-repo-management/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Git仓库管理的思考</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2015/03/22/software-fuck-you/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">流氓软件遭遇战</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODIwOS8yNDcwNQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+
+                if (typeof LivereTower === 'function') { return; }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+
+            
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>EdisonKo &copy; 2014 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&title=《游戏角色模型设计》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&title=《游戏角色模型设计》 — EdisonKo's Blog&source=1、设计原则我们需要设计一个角色模型，独立于角色数值以及角色动画之外，能够根据不同的角色类型，表现出不同的行为。我们游戏采用cocos2d-x引擎，游戏中..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2016/01/05/game-actor-model-design/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《游戏角色模型设计》 — EdisonKo's Blog&url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2016/01/05/game-actor-model-design/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=https://blog.reciyun.com/2016/01/05/game-actor-model-design/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+<!-- Tencent Speed -->
+<script>var _speedMark = new Date()</script>
+<!-- End Tencent Speed -->
+<!-- Tencent Analysis -->
+<script async src="//tajs.qq.com/stats?sId=66508906"></script>
+<!-- End Tencent Analysis -->
+
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>组件化！游戏设计模式之ECS架构 | EdisonKo&#39;s Blog | Never stop.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="游戏设计">
+    <meta name="description" content="近年来，随着移动流量的资费下降以及4G网络的普及，越来越多的手游抛弃了以往短链接的网络方式，开始使用WebSocket、SocketIO等长链接方案来实现实时的消息处理。无论是《王者荣耀》还是《绝地求生》，都是长链接的佼佼者，具体的细节网上有一些相关的文章有讨论。至于长链接和短链接更有千秋，这不是我们这篇文章要探讨的问题，我们要讨论的是针对长链接的网络连接方式，对架构进行针对性的设计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件化！游戏设计模式之ECS架构">
+<meta property="og:url" content="https://blog.reciyun.com/2018/04/21/game-ecs-design/index.html">
+<meta property="og:site_name" content="EdisonKo&#39;s Blog">
+<meta property="og:description" content="近年来，随着移动流量的资费下降以及4G网络的普及，越来越多的手游抛弃了以往短链接的网络方式，开始使用WebSocket、SocketIO等长链接方案来实现实时的消息处理。无论是《王者荣耀》还是《绝地求生》，都是长链接的佼佼者，具体的细节网上有一些相关的文章有讨论。至于长链接和短链接更有千秋，这不是我们这篇文章要探讨的问题，我们要讨论的是针对长链接的网络连接方式，对架构进行针对性的设计。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-21T11:03:20.000Z">
+<meta property="article:modified_time" content="2020-01-12T09:39:44.447Z">
+<meta property="article:author" content="EdisonKo">
+<meta property="article:tag" content="游戏设计">
+<meta name="twitter:card" content="summary">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">EdisonKo</h5>
+          <a href="mailto:koalli#msn.com" title="koalli#msn.com" class="mail">koalli#msn.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/koalli" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">组件化！游戏设计模式之ECS架构</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">组件化！游戏设计模式之ECS架构</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-04-21T11:03:20.000Z" itemprop="datePublished" class="page-time">
+  2018-04-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-game-ecs-design"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">组件化！游戏设计模式之ECS架构</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-04-21 11:03:20" datetime="2018-04-21T11:03:20.000Z"  itemprop="datePublished">2018-04-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>近年来，随着移动流量的资费下降以及4G网络的普及，越来越多的手游抛弃了以往短链接的网络方式，开始使用WebSocket、SocketIO等长链接方案来实现实时的消息处理。无论是《王者荣耀》还是《绝地求生》，都是长链接的佼佼者，具体的细节网上有一些相关的文章有讨论。至于长链接和短链接更有千秋，这不是我们这篇文章要探讨的问题，我们要讨论的是针对长链接的网络连接方式，对架构进行针对性的设计。</p>
+<a id="more"></a>
+<p>由于网络的不确定性，实现绝对的实时连接是不可能的，因此长链接方案给整个项目系统架构提出更高的要求。无论是客户端还是服务端都需要参与到整个设计中来，我们简单通过一个射击游戏的案例来分析。</p>
+<ul>
+<li><p>1.玩家A的设备中，玩家A瞄准了玩家B并开枪击中了，玩家A告诉服务器我开枪了。</p>
+</li>
+<li><p>2.玩家B在玩家A开枪前就告诉服务器，我正在一直往前跑，并且此时服务器已经记录下玩家B的相关数据了。</p>
+</li>
+</ul>
+<p>这时服务器收到了玩家A发送过来开枪的消息，由于网络延迟的原因，无论是玩家A还是玩家B，他们设备中的状态都已经不是发送消息时的状态了。在这种情况下，服务器要判定子弹是否击中玩家B，就需要考虑网络延迟，这就需要服务端采用预测的方式来计算。</p>
+<ul>
+<li>3.玩家B的设备中，玩家B在一分钟前告诉服务器，我正在一直往前跑，这时候玩家B断网了。</li>
+</ul>
+<p>此时服务器通过之前保存的数据，判定玩家A已经击杀了玩家B，但是玩家B由于断网仍然保持往前跑的操作，等到玩家B重新连接上网络的时候，客户端会发生什么事情呢？玩家B在跑到很远的地方，周围没有任何人的情况下，莫名奇妙被击杀了，这显然不是一个好的体验。有一种简单的处理方式就是，客户端将整个战场重新设置到玩家B断网的时刻，重新将玩家们放到那个时刻，重现玩家A开枪击杀玩家B的画面，简单的说就是回放。</p>
+<p>为了解决这种问题，我在收集资料时找到了下面这篇文章：</p>
+<blockquote>
+<p>《守望先锋》架构设计与网络同步：<a href="http://gad.qq.com/article/detail/28682" target="_blank" rel="noopener">http://gad.qq.com/article/detail/28682</a></p>
+</blockquote>
+<p>这就是我们这篇文章所要讨论的ECS架构(Entity-Component-System)。</p>
+<p>我们先来看Entity，从某种程度上来说它就是场景上的一个GameObject，而这个GameObject由许多的Component组合而成。</p>
+<p>而Component则是负责存储状态、数据，它不包含任何的行为。比如一个GameObject有一个移动组件，这个组件记录了移动的起点、方向、速度等数据。</p>
+<p>System在这个架构中主要负责逻辑，比如有个移动系统，在上层逻辑进入这个系统的时候，它需要筛选出所有的移动组件并进行相应的处理。</p>
+<p>在System之上，还有一个负责维护所有System的World。</p>
+<p>在守望先锋的这个架构我们可以看出来，应该尽可能将所有的数据和状态都从System中剥离出去，System只根据Component保存的状态来进行逻辑处理。在实时性要求高的游戏中，状态和数据的保存至关重要，只由Component来保存数据和状态的话可以很轻易地将逻辑和数据解耦。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <footer>
+        <a href="https://blog.reciyun.com">
+            <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" alt="EdisonKo">
+            EdisonKo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1/" rel="tag">游戏设计</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&title=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&title=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&source=近年来，随着移动流量的资费下降以及4G网络的普及，越来越多的手游抛弃了以往短链接的网络方式，开始使用WebSocket、SocketIO等长链接方案来实现..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2018/04/21/game-ecs-design/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/09/01/my-new-step/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">踏出新的一步</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/04/06/docker-guide/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Docker中使用Mysql容器</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODIwOS8yNDcwNQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+
+                if (typeof LivereTower === 'function') { return; }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+
+            
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>EdisonKo &copy; 2014 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&title=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&title=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&source=近年来，随着移动流量的资费下降以及4G网络的普及，越来越多的手游抛弃了以往短链接的网络方式，开始使用WebSocket、SocketIO等长链接方案来实现..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2018/04/21/game-ecs-design/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《组件化！游戏设计模式之ECS架构》 — EdisonKo's Blog&url=https://blog.reciyun.com/2018/04/21/game-ecs-design/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2018/04/21/game-ecs-design/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=https://blog.reciyun.com/2018/04/21/game-ecs-design/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

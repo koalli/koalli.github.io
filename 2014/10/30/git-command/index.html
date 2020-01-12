@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+<!-- Tencent Speed -->
+<script>var _speedMark = new Date()</script>
+<!-- End Tencent Speed -->
+<!-- Tencent Analysis -->
+<script async src="//tajs.qq.com/stats?sId=66508906"></script>
+<!-- End Tencent Analysis -->
+
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>常用git命令 | EdisonKo&#39;s Blog | Never stop.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="git">
+    <meta name="description" content="前言　　最早使用git的时候大概是在2012年11月在福州一家游戏公司实习的时候，那会的工作是cocos2dx客户端开发，项目在xcode上配合git进行版本控制管理，当时学习的时候并未进行深入的学习。 　　实习了3个月左右我就回了学校，毕业后离开了福州来到了现在这家公司，前几天有个跟我一样在之前那家公司呆过的童鞋来公司面试，刚好我看到简历并且发现是同校的学长，无意中发现他在github上有一个自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用git命令">
+<meta property="og:url" content="https://blog.reciyun.com/2014/10/30/git-command/index.html">
+<meta property="og:site_name" content="EdisonKo&#39;s Blog">
+<meta property="og:description" content="前言　　最早使用git的时候大概是在2012年11月在福州一家游戏公司实习的时候，那会的工作是cocos2dx客户端开发，项目在xcode上配合git进行版本控制管理，当时学习的时候并未进行深入的学习。 　　实习了3个月左右我就回了学校，毕业后离开了福州来到了现在这家公司，前几天有个跟我一样在之前那家公司呆过的童鞋来公司面试，刚好我看到简历并且发现是同校的学长，无意中发现他在github上有一个自">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2014-10-30T14:33:21.000Z">
+<meta property="article:modified_time" content="2020-01-12T09:39:44.447Z">
+<meta property="article:author" content="EdisonKo">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">EdisonKo</h5>
+          <a href="mailto:koalli#msn.com" title="koalli#msn.com" class="mail">koalli#msn.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/koalli" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">常用git命令</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">常用git命令</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2014-10-30T14:33:21.000Z" itemprop="datePublished" class="page-time">
+  2014-10-30
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-clone"><span class="post-toc-number">2.</span> <span class="post-toc-text">git clone</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-init和git-remote"><span class="post-toc-number">3.</span> <span class="post-toc-text">git init和git remote</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查看远程仓库"><span class="post-toc-number">4.</span> <span class="post-toc-text">查看远程仓库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添加远程仓库"><span class="post-toc-number">5.</span> <span class="post-toc-text">添加远程仓库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-pull"><span class="post-toc-number">6.</span> <span class="post-toc-text">git pull</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-add"><span class="post-toc-number">7.</span> <span class="post-toc-text">git add</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-rm"><span class="post-toc-number">8.</span> <span class="post-toc-text">git rm</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-commit"><span class="post-toc-number">9.</span> <span class="post-toc-text">git commit</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-push"><span class="post-toc-number">10.</span> <span class="post-toc-text">git push</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-revert"><span class="post-toc-number">11.</span> <span class="post-toc-text">git revert</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-tag"><span class="post-toc-number">12.</span> <span class="post-toc-text">git tag</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#git-config"><span class="post-toc-number">13.</span> <span class="post-toc-text">git config</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-git-command"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">常用git命令</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2014-10-30 14:33:21" datetime="2014-10-30T14:33:21.000Z"  itemprop="datePublished">2014-10-30</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>　　最早使用git的时候大概是在2012年11月在福州一家游戏公司实习的时候，那会的工作是cocos2dx客户端开发，项目在xcode上配合git进行版本控制管理，当时学习的时候并未进行深入的学习。</p>
+<p>　　实习了3个月左右我就回了学校，毕业后离开了福州来到了现在这家公司，前几天有个跟我一样在之前那家公司呆过的童鞋来公司面试，刚好我看到简历并且发现是同校的学长，无意中发现他在github上有一个自己的blog，写了一些比较有趣的东西。</p>
+<a id="more"></a>
+
+<p>　　我大概是在没上初中的时候就开始接触网页制作，那会也做过类似的个人主页，后来博客横行的时候也写过博客，基本上是写一些无关痛痒的文字，偶尔自言自语发发牢骚。后来陆陆续续认识一些站长，什么IIS啊花生壳啊也都玩过，自己也做了些乱七八糟的小网页啊电子同学录之类的东西。</p>
+<p>　　后来上了高中几个同学自己凑钱买了服务器做了个班级论坛，那些数据可能至今都还在我家里的某台电脑上。再后来大学读了计算机科学与技术，也有一两个网页相关的专业，自己闲着也用WordPress之类的东西在一些VPS上写过一些心情什么的，却从来没有想过在github上玩。</p>
+<p>　　这个学长的blog顿时吸引了我，于是我去搜了搜相关的资料，发现其实在github上写blog十分的方便，这种在控制台敲敲命令行管理blog的方式也让我耳目一新，稍微学习了一下就决定也抽空写点技术相关的文档啊心情什么的。</p>
+<p>　　说干就干，搜索了一些资料，最后决定用github+hexo来做我这个blog，hexo的命令十分的简单，主题什么的也比较符合我的审美，通过git来部署的方式十分的方便，敲几行命令行就搞定blog的更新让人有种莫名的快感，于是我就把git的常用命令行收集整理一下，以备后用。</p>
+<h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><p>　　当你已经有一个远程的Git版本库，只需要在本地克隆一份</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git:&#x2F;&#x2F;github.com&#x2F;someone&#x2F;some_project.git some_project</span><br></pre></td></tr></table></figure>
+<h3 id="git-init和git-remote"><a href="#git-init和git-remote" class="headerlink" title="git init和git remote"></a>git init和git remote</h3><p>　　当你本地创建了一个工作目录，你可以进入这个目录，使用’git init’命令进行初始化；Git以后就会对该目录下的文件进行版本控制，这时候如果你需要将它放到远程服务器上，可以在远程服务器上创建一个目录，并把可访问的URL记录下来，此时你就可以利用’git remote add’命令来增加一个远程服务器端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git:&#x2F;&#x2F;github.com&#x2F;someone&#x2F;another_project.git</span><br></pre></td></tr></table></figure>
+<h3 id="查看远程仓库"><a href="#查看远程仓库" class="headerlink" title="查看远程仓库"></a>查看远程仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+<h3 id="添加远程仓库"><a href="#添加远程仓库" class="headerlink" title="添加远程仓库"></a>添加远程仓库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add [name] [url]</span><br></pre></td></tr></table></figure>
+<h3 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h3><p>　　从其他版本库（远程或本地）将代码更新到本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master</span><br></pre></td></tr></table></figure>
+<h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><p>　　将当前更改或者新增的文件加入到git的索引中，记入历史版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
+<h3 id="git-rm"><a href="#git-rm" class="headerlink" title="git rm"></a>git rm</h3><p>　　从当前工作空间和索引中删除文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm &#x2F;README.md</span><br></pre></td></tr></table></figure>
+<h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><p>　　提交当前工作空间的修改内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &#39;fix bug bla bla.&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h3><p>　　将本地commit的代码更新到远程版本库中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<h3 id="git-revert"><a href="#git-revert" class="headerlink" title="git revert"></a>git revert</h3><p>　　还原一个版本的修改，必须提供一个git提供的版本号哈希值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert bbaf6fb5060b4875b18ff9ff637ce118256d6f20</span><br></pre></td></tr></table></figure>
+<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><p>　　可以给一个具体的版本号设置一个标签，这样就不需要记忆复杂的版本号哈希值了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag new_version bbaf6fb5060b4875b18ff9ff637ce118256d6f20</span><br></pre></td></tr></table></figure>
+<h3 id="git-config"><a href="#git-config" class="headerlink" title="git config"></a>git config</h3><p>　　利用这个命令可以更改git的各种设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name [name]</span><br><span class="line">git config --global user.email [email]</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <footer>
+        <a href="https://blog.reciyun.com">
+            <img src="http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" alt="EdisonKo">
+            EdisonKo
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2014/10/30/git-command/&title=《常用git命令》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2014/10/30/git-command/&title=《常用git命令》 — EdisonKo's Blog&source=前言　　最早使用git的时候大概是在2012年11月在福州一家游戏公司实习的时候，那会的工作是cocos2dx客户端开发，项目在xcode上配合git进行..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2014/10/30/git-command/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《常用git命令》 — EdisonKo's Blog&url=https://blog.reciyun.com/2014/10/30/git-command/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2014/10/30/git-command/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2014/11/30/hexo-load-slowly/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Hexo部分模版在国内加载缓慢的解决方案</h4>
+      </a>
+    </div>
+  
+
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="comments" id="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC80ODIwOS8yNDcwNQ==">
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+
+                if (typeof LivereTower === 'function') { return; }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+</section>
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+
+            
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>EdisonKo &copy; 2014 - 2020</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://blog.reciyun.com/2014/10/30/git-command/&title=《常用git命令》 — EdisonKo's Blog&pic=http://ww3.sinaimg.cn/thumb150/57ba9f50jw1e3fvh3fgduj.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://blog.reciyun.com/2014/10/30/git-command/&title=《常用git命令》 — EdisonKo's Blog&source=前言　　最早使用git的时候大概是在2012年11月在福州一家游戏公司实习的时候，那会的工作是cocos2dx客户端开发，项目在xcode上配合git进行..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.reciyun.com/2014/10/30/git-command/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《常用git命令》 — EdisonKo's Blog&url=https://blog.reciyun.com/2014/10/30/git-command/&via=https://blog.reciyun.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://blog.reciyun.com/2014/10/30/git-command/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//my.tv.sohu.com/user/a/wvideo/getQRCode.do?text=https://blog.reciyun.com/2014/10/30/git-command/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.zhimg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
